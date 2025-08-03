@@ -1,15 +1,13 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-const galleryContainer = document.querySelector('.gallery');
-const loader = document.querySelector('.loader');
-
 let lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
 
 export function createGallery(images) {
+  const gallery = document.querySelector('.gallery');
   const markup = images
     .map(
       ({
@@ -20,7 +18,8 @@ export function createGallery(images) {
         views,
         comments,
         downloads,
-      }) => `
+      }) => {
+        return `
         <li class="gallery-item">
           <div class="img-wrap">
             <a href="${largeImageURL}" class="gallery-link">
@@ -34,23 +33,33 @@ export function createGallery(images) {
             <div class="text-info"><span><b>Downloads</b></span><span>${downloads}</span></div>
           </div>
         </li>
-      `
+      `;
+      }
     )
     .join('');
-
-  galleryContainer.insertAdjacentHTML('beforeend', markup);
-
+  gallery.insertAdjacentHTML('beforeend', markup);
   lightbox.refresh();
 }
 
 export function clearGallery() {
-  galleryContainer.innerHTML = '';
+  document.querySelector('.gallery').innerHTML = '';
 }
 
+const loadMoreBtn = document.querySelector('.btn-more');
+const loaderWrapper = document.querySelector('.loader');
+
 export function showLoader() {
-  loader.classList.add('active');
+  loaderWrapper.classList.add('active');
 }
 
 export function hideLoader() {
-  loader.classList.remove('active');
+  loaderWrapper.classList.remove('active');
+}
+
+export function showLoadMoreButton() {
+  loadMoreBtn.classList.add('active');
+}
+
+export function hideLoadMoreButton() {
+  loadMoreBtn.classList.remove('active');
 }
